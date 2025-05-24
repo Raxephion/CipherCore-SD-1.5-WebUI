@@ -45,7 +45,8 @@ DEFAULT_HUB_MODELS = [
     "danyloylo/sd1.5-ghibli-style-05",
     "Bilal326/SD_1.5_DragonWarriorV2",
     "emilianJR/epiCRealism",
-    "Yntec/RevAnimatedV2Rebirth"
+    "Yntec/RevAnimatedV2Rebirth",
+    "stablediffusionapi/realcartoon-anime-v11"
     # "CompVis/stable-diffusion-v1-4", # Example SD 1.4 model (might behave slightly differently)
     # Add other diffusers-compatible SD1.5 models here
 ]
