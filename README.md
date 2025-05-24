@@ -150,6 +150,11 @@ If you are not on Windows or prefer a manual command-line approach:
     *   Update dependencies: `pip install -r requirements.txt --upgrade`
     *   Deactivate the environment: `deactivate`
 
+## ⚙️ Uninstall:
+
+1.  **Clone the Repository:**
+    *  Delete the main directory (folder) - this app is completely portable.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
