@@ -7,6 +7,10 @@ Welcome to the CipherCore Stable Diffusion 1.5 Generator! This user-friendly Gra
 
 This project is designed for **Windows** users seeking a simple experience through easy-to-use batch files, as well as providing manual setup options for other platforms or advanced users.
 
+## Application Screenshot:
+
+![Screenshot of the CipherCore Stable Diffusion 1.5 UI](images/ciphercore01.png)
+
 ## ✨ Features
 
 *   **Flexible Model Selection:**
@@ -71,6 +75,8 @@ This is the recommended method for most Windows users.
         ├── setup.bat
         ├── run.bat
         ├── update.bat
+        ├── images/              <-- This folder should exist
+        │   └── ciphercore01.png   <-- Your image file should be here
         └── ...
         ```
 
@@ -107,7 +113,7 @@ This method is for Windows users who are comfortable with Git.
     cd CipherCore-SD1.5-Image-Generator-
     ```
     *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
-2.  **Proceed with Batch Files:** Continue by following **Step 2 (Run the Setup Script)**, **Step 3 (Prepare Local Models)**, **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above.
+2.  **Proceed with Batch Files:** Continue by following **Step 2 (Run the Setup Script)**, **Step 4 (Prepare Local Models)** (for your *own* checkpoints), **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above. Make sure to manually create the `images` folder and add `ciphercore01.png` if you use this method and they aren't already in the cloned repo.
 
 ## 🛠️ Manual Setup, Running & Updating (For Linux/macOS or Advanced Users)
 
@@ -137,7 +143,7 @@ If you are not on Windows or prefer a manual command-line approach:
             ```bash
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
             ```
-4.  **Prepare Local Models (Optional):** Follow Step 3 from the **📦 Easy Setup (Windows - Download & Run)** section above.
+4.  **Prepare Local Models (Optional):** Follow Step 4 from the **📦 Easy Setup (Windows - Download & Run)** section above (the part about the `checkpoints` folder).
 5.  **Run the Application:**
     ```bash
     python main.py
@@ -153,7 +159,7 @@ If you are not on Windows or prefer a manual command-line approach:
 ## ⚙️ Uninstall:
 
 1.  **Delete the main directory (folder) - this app is completely portable.**
-   
+
 
 ## 📄 License
 
