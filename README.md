@@ -5,7 +5,7 @@
 
 Welcome to the CipherCore Stable Diffusion 1.5 Generator! This user-friendly Gradio web application allows you to effortlessly generate images using various Stable Diffusion 1.5 models. Whether you have local models or prefer popular ones from the Hugging Face Hub, this tool provides a simple interface to unleash your creativity on your CPU or GPU.
 
-This repository includes simple batch files (`setup.bat`, `run.bat`) to streamline the setup and running process specifically for **Windows** users, aiming to make it easier for those less familiar with command-line interfaces.
+This project is designed for **Windows** users seeking a simple experience through easy-to-use batch files, as well as providing manual setup options for other platforms or advanced users.
 
 ## ✨ Features
 
@@ -32,35 +32,33 @@ This repository includes simple batch files (`setup.bat`, `run.bat`) to streamli
 
 *   **Windows Operating System:** The provided batch files (`.bat`) are for Windows. For other operating systems, follow the manual setup steps below.
 *   **Python:** 3.8 or higher. Ensure Python is installed and added to your system's PATH (usually an option during installation). You can download Python from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
-*   **Git:** For cloning the repository.
+*   **Git:** (Required for manual setup and updating) For cloning the repository.
 *   **Hardware:**
     *   A modern CPU is required.
     *   For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.
-*   **Internet Connection:** Required for downloading models from Hugging Face Hub on first use.
+*   **Internet Connection:** Required for downloading models from Hugging Face Hub and for updates.
 
-## ⚙️ Setup & Installation (Windows via Batch Files)
+## 📦 Easy Setup (Windows - Download & Run)
 
-1.  **Clone the Repository:** Open Command Prompt or PowerShell, navigate to where you want to download the project, and run:
-    ```bash
-    git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
-    cd CipherCore-SD1.5-Image-Generator-
-    ```
-    *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
+This is the recommended method for most Windows users.
 
-2.  **Run the Setup Script:**
-    Double-click the `setup.bat` file in the project's root directory OR run it from your command prompt:
-    ```bash
-    setup.bat
-    ```
-    *   This script will create a Python virtual environment (`venv`), install the necessary core dependencies (like Gradio, Diffusers, Transformers, Hugging Face Hub, Pillow) from `requirements.txt`, and install the **CPU version** of PyTorch by default.
+1.  **Download the project:**
+    *   Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-` (replace `Raxephion/CipherCore-SD1.5-Image-Generator-` with your actual repo path if different).
+    *   Click the green "Code" button.
+    *   Click "Download ZIP".
+2.  **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
+3.  **Run the Setup Script:**
+    *   Navigate into the extracted folder.
+    *   Find the file named `setup.bat`.
+    *   **Double-click `setup.bat`** to run it.
+    *   A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the **CPU version** of PyTorch by default.
     *   **Important:** Read the output in the command prompt carefully during and after the script finishes. It will provide specific commands if you wish to upgrade PyTorch to the GPU-accelerated CUDA version, which is necessary for fast generation on an NVIDIA GPU. You must run this upgrade command manually if you have a GPU and want to use it.
-
-3.  **Prepare Local Models (Optional):**
-    *   Create a directory named `checkpoints` in the root of the project (if `setup.bat` didn't create it).
+4.  **Prepare Local Models (Optional):**
+    *   Inside the extracted project folder, create a directory named `checkpoints` (if `setup.bat` didn't create it).
     *   Place your Stable Diffusion 1.5 models (in `diffusers` format – meaning each model is a folder containing files like `model_index.json`, `unet/`, `vae/`, etc.) inside the `checkpoints` directory.
         Example structure:
         ```
-        CipherCore-SD1.5-Image-Generator-/
+        YourProjectFolder/
         ├── checkpoints/
         │   ├── my-custom-model-1/
         │   │   ├── model_index.json
@@ -72,14 +70,82 @@ This repository includes simple batch files (`setup.bat`, `run.bat`) to streamli
         ├── requirements.txt
         ├── setup.bat
         ├── run.bat
+        ├── update.bat
         └── ...
         ```
 
-## ▶️ Running the Application (Windows via Batch File)
+## ▶️ Running the Application (Windows - Easy Method)
 
-Once the setup is complete, launch the Gradio web UI:
+Once the setup is complete, launch the Gradio web UI by double-clicking the `run.bat` file in the project folder.
 
-Double-click the `run.bat` file in the project's root directory OR run it from your command prompt:
+*   A command prompt window will open, activate the environment, and start the application.
+*   A browser window should automatically open to the application (or a local URL will be provided in the console, usually `http://127.0.0.1:7860`).
 
-```bash
-run.bat
+## 🔄 Updating the Application (Windows - Easy Method)
+
+To get the latest code and dependency updates from this repository after using the easy setup:
+
+*   Navigate to the project folder.
+*   Find the file named `update.bat`.
+*   **Double-click `update.bat`** to run it.
+*   A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
+*   **Important:** This assumes you have not made local changes that conflict with the repository updates. If `git pull` fails, you may need to handle merge conflicts manually or discard local changes.
+
+---
+
+## ⚙️ Manual Setup (Windows - Git Clone)
+
+This method is for Windows users who are comfortable with Git.
+
+1.  **Clone the Repository:** Open Command Prompt or PowerShell, navigate to where you want to download the project, and run:
+    ```bash
+    git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
+    cd CipherCore-SD1.5-Image-Generator-
+    ```
+    *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
+2.  **Proceed with Batch Files:** Continue by following **Step 2 (Run the Setup Script)**, **Step 3 (Prepare Local Models)**, **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above.
+
+## 🛠️ Manual Setup, Running & Updating (For Linux/macOS or Advanced Users)
+
+If you are not on Windows or prefer a manual command-line approach:
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
+    cd CipherCore-SD1.5-Image-Generator-
+    ```
+2.  **Create and Activate a Virtual Environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    ```
+3.  **Install Dependencies (including PyTorch):**
+    *   Install core dependencies (this includes `gradio`, `diffusers`, `transformers`, `huggingface_hub`, `Pillow`):
+        ```bash
+        pip install -r requirements.txt
+        ```
+    *   Install PyTorch: **This step is crucial and depends on your hardware.**
+        *   **For CPU ONLY:**
+            ```bash
+            pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+            ```
+        *   **For NVIDIA GPU with CUDA (Recommended for speed):** Find the appropriate command for your CUDA version (check PyTorch's website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)). Example for CUDA 11.8:
+            ```bash
+            pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+            ```
+4.  **Prepare Local Models (Optional):** Follow Step 3 from the **📦 Easy Setup (Windows - Download & Run)** section above.
+5.  **Run the Application:**
+    ```bash
+    python main.py
+    ```
+    Ensure your virtual environment is activated (`source venv/bin/activate`) before running this command.
+6.  **Updating Manually:**
+    *   Navigate to the project directory in your terminal.
+    *   Ensure your virtual environment is activated (`source venv/bin/activate`).
+    *   Pull the latest code: `git pull`
+    *   Update dependencies: `pip install -r requirements.txt --upgrade`
+    *   Deactivate the environment: `deactivate`
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
