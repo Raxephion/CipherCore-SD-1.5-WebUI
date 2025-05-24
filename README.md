@@ -152,8 +152,8 @@ If you are not on Windows or prefer a manual command-line approach:
 
 ## ⚙️ Uninstall:
 
-1.  **Clone the Repository:**
-    *  Delete the main directory (folder) - this app is completely portable.
+1.  **Delete the main directory (folder) - this app is completely portable.**
+   
 
 ## 📄 License
 
