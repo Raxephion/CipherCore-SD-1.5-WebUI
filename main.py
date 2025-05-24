@@ -4,6 +4,7 @@ Created on Wed Sep 18 2024
 
 @author: raxephion
 Basic Stable Diffusion 1.5 Gradio App with local/Hub models and CPU/GPU selection
+Added multi-image generation capability.
 
 """
 
@@ -15,16 +16,16 @@ from diffusers import DDPMScheduler, EulerDiscreteScheduler, DPMSolverMultistepS
 import os
 from PIL import Image
 import time # Optional: for timing generation
-# Optional imports - removed explicit HfFolder, login as they aren't used in the provided code logic
-# from huggingface_hub import HfFolder, login # Optional: for logging in
+import random # Needed for random seed
+import numpy as np # Needed for MAX_SEED, even if not used directly with gr.Number(-1) input
+
 
 # --- Configuration ---
 MODELS_DIR = "checkpoints"
 # Standard SD 1.5 sizes (multiples of 64 are generally safe)
 # Models are primarily trained on 512x512. Other sizes might show artifacts.
 # Added 'hire.fix' as an option, interpreted as 1024x1024 in this script
-SUPPORTED_SD15_SIZES = ["512x512", "768x512", "512x768", "768x778", "1024x768", "768x1024", "1024x1024", "hire.fix"]
-
+SUPPORTED_SD15_SIZES = ["512x512", "768x512", "512x768", "768x768", "1024x768", "768x1024", "1024x1024", "hire.fix"] # Corrected typo
 
 # Mapping of friendly scheduler names to their diffusers classes
 SCHEDULER_MAP = {
@@ -50,6 +51,9 @@ DEFAULT_HUB_MODELS = [
     # "CompVis/stable-diffusion-v1-4", # Example SD 1.4 model (might behave slightly differently)
     # Add other diffusers-compatible SD1.5 models here
 ]
+
+# --- Constants for UI / Generation ---
+MAX_SEED = np.iinfo(np.int32).max # Define MAX_SEED for random number generation
 
 # --- Determine available devices and set up options ---
 AVAILABLE_DEVICES = ["CPU"]
@@ -93,32 +97,30 @@ def list_local_models(models_dir):
 
 
 # --- Image Generation Function ---
-# Added 'selected_device_str' parameter
-def generate_image(model_identifier, selected_device_str, prompt, negative_prompt, steps, cfg_scale, scheduler_name, size, seed):
-    """Generates an image using the selected model and parameters on the chosen device."""
-    global current_pipeline, current_model_id, current_device_loaded, SCHEDULER_MAP
+# Added 'selected_device_str' and 'num_images' parameters
+def generate_image(model_identifier, selected_device_str, prompt, negative_prompt, steps, cfg_scale, scheduler_name, size, seed, num_images):
+    """Generates images using the selected model and parameters on the chosen device."""
+    global current_pipeline, current_model_id, current_device_loaded, SCHEDULER_MAP, MAX_SEED
 
     if not model_identifier or model_identifier == "No models found":
         raise gr.Error(f"No model selected or available. Please add models to '{MODELS_DIR}' or ensure Hub IDs are correct in the script.")
     if not prompt:
         raise gr.Error("Please enter a prompt.")
 
+    num_images_int = int(num_images) # Convert num_images slider value to int
+    if num_images_int <= 0:
+         raise gr.Error("Number of images must be at least 1.")
+
     # Map selected device string to PyTorch device string
     device_to_use = "cuda" if selected_device_str == "GPU" and "GPU" in AVAILABLE_DEVICES else "cpu"
     # If GPU was selected but not available, raise an error specific to this condition
     if selected_device_str == "GPU" and device_to_use == "cpu":
-         # The AVAILABLE_DEVICES check already told us if CUDA is available *to PyTorch*
-         # This message is more informative now that CPU is default install
          raise gr.Error("GPU selected but CUDA is not available to PyTorch. Ensure you have a compatible NVIDIA GPU, the correct drivers, and have installed the CUDA version of PyTorch in your environment.")
 
 
     # Determine dtype based on the actual device being used
-    # Note: fp16 is generally faster and uses less VRAM on compatible GPUs (usually NVIDIA)
-    # Check for CUDA capability specifically for fp16
     dtype_to_use = torch.float32 # Default
     if device_to_use == "cuda":
-        # Check if the GPU supports fp16 (most modern ones do)
-        # Use torch.cuda.get_device_properties(0).compute_capability for more detail if needed
         if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 7: # Check compute capability (7.0+ for good fp16)
              dtype_to_use = torch.float16
              print("GPU supports FP16, using torch.float16 for potential performance/memory savings.")
@@ -159,31 +161,22 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
                      print(f"Warning: Error clearing CUDA cache: {cache_e}") # Don't stop if cache clearing fails
 
         # Ensure the device is actually available if not CPU (redundant with initial check but safe)
-        # if device_to_use == "cuda":
-        #      if not torch.cuda.is_available():
-        #           raise gr.Error("CUDA selected but not available. Please install PyTorch with CUDA support or select CPU.")
+        if device_to_use == "cuda":
+             if not torch.cuda.is_available():
+                  raise gr.Error("CUDA selected but not available. Please install PyTorch with CUDA support or select CPU.")
 
         try:
             # Load the pipeline
-            # Using .safetensors is generally preferred if available
-            # Check if it's a local path first
             is_local_path = os.path.isdir(model_identifier) # Simplified check: assumes local models are dirs
-            # Could add check for specific files: or (os.path.isfile(model_identifier) and model_identifier.endswith(('.safetensors', '.ckpt')))
-            # But diffusers from_pretrained handles directories best.
 
             if is_local_path:
-                 # from_pretrained can often handle local safetensors/checkpoints directly if they follow diffusers format
-                 # Or it can load from a directory structured like a diffusers model
                  print(f"Attempting to load local model from: {model_identifier}")
                  pipeline = StableDiffusionPipeline.from_pretrained(
                      model_identifier,
                      torch_dtype=dtype_to_use,
                      safety_checker=None, # Removed for simplicity/speed, use with caution
-                     # Consider adding `vae=AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse", torch_dtype=dtype_to_use).to(device_to_use)`
-                     # if using non-standard models that might need a VAE
                  )
             else:
-                 # Assume it's a Hugging Face Hub ID
                  print(f"Attempting to load Hub model: {model_identifier}")
                  pipeline = StableDiffusionPipeline.from_pretrained(
                      model_identifier,
@@ -199,7 +192,6 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
             current_device_loaded = torch.device(device_to_use)
 
             # Basic check for SD1.x architecture (cross_attention_dim = 768)
-            # This check is a heuristic and might not be perfect
             unet_config = getattr(pipeline, 'unet', None)
             if unet_config and hasattr(unet_config, 'config') and hasattr(unet_config.config, 'cross_attention_dim'):
                  cross_attn_dim = unet_config.config.cross_attention_dim
@@ -239,6 +231,11 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
                  raise gr.Error(f"Dependency error: {e}. Ensure all dependencies are installed (run setup.bat) and PyTorch is installed correctly for your device.")
             else:
                 raise gr.Error(f"Failed to load model '{model_identifier}': {e}")
+
+    # Check if pipeline is successfully loaded before proceeding
+    if current_pipeline is None:
+         raise gr.Error("Model failed to load. Cannot generate image.")
+
 
     # 2. Configure Scheduler
     selected_scheduler_class = SCHEDULER_MAP.get(scheduler_name)
@@ -292,25 +289,42 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
 
     # 4. Set Seed Generator
     # Ensure generator is on the correct device if seed is provided
+    # When generating multiple images, diffusers uses the same seed for the whole batch,
+    # but applies a different noise initialization for each image in the batch unless
+    # you use a specific BatchedEulerDiscreteScheduler or manual noise generation.
+    # For simplicity here, we'll use a single generator instance for the batch.
     generator = None
     # The generator device needs to match the pipeline device
     generator_device = current_pipeline.device if current_pipeline else torch.device(device_to_use)
 
-    if seed != -1:
-        try:
-            # Explicitly move generator to the desired device
-            generator = torch.Generator(device=generator_device).manual_seed(int(seed))
-            print(f"Using seed: {int(seed)} on generator device: {generator_device}")
-        except Exception as e:
-             print(f"Warning: Error setting seed generator on device {generator_device}: {e}. Falling back to default generator (might be on CPU).")
-             gr.Warning(f"Failed to set seed generator on device {generator_device}. Using random seed. Error: {e}")
-             generator = None # Let pipeline handle random seed if generator creation fails
+    # Handle seed based on input (-1 for random)
+    seed_int = int(seed) # Get the integer value from the input
+
+    if seed_int == -1: # Check if the user explicitly requested a random seed
+        seed_int = random.randint(0, MAX_SEED) # Generate a random seed
+        print(f"User requested random seed (-1), generated: {seed_int}")
     else:
-         print("Using random seed.") # Pipeline handles this when generator is None
+        print(f"Using provided seed: {seed_int}")
 
 
-    # 5. Generate Image
-    print(f"Generating: Prompt='{prompt[:80]}{'...' if len(prompt) > 80 else ''}', NegPrompt='{negative_prompt[:80]}{'...' if len(negative_prompt) > 80 else ''}', Steps={int(steps)}, CFG={float(cfg_scale)}, Size={width}x{height}, Scheduler={scheduler_name}, Seed={'Random' if seed == -1 else int(seed)}")
+    try:
+        # Explicitly move generator to the desired device
+        generator = torch.Generator(device=generator_device).manual_seed(seed_int)
+        print(f"Generator set with seed {seed_int} on device: {generator_device}")
+    except Exception as e:
+         print(f"Warning: Error setting seed generator on device {generator_device}: {e}. Falling back to default generator (potentially on CPU) or system random.")
+         gr.Warning(f"Failed to set seed generator with seed {seed_int}. Using random seed. Error: {e}")
+         generator = None # Let pipeline handle random seed if generator creation fails or device mismatch
+         # If generator creation failed, the actual seed used by the pipeline will be different and system-dependent random.
+         # We should probably report -1 in this case, or just report the seed we tried to use.
+         # Reporting the seed we *tried* to use is simpler and often sufficient.
+         pass # Keep the last calculated seed_int
+
+
+    # 5. Generate Images
+    # num_images_int is already defined and validated above
+
+    print(f"Generating {num_images_int} image(s): Prompt='{prompt[:80]}{'...' if len(prompt) > 80 else ''}', NegPrompt='{negative_prompt[:80]}{'...' if len(negative_prompt) > 80 else ''}', Steps={int(steps)}, CFG={float(cfg_scale)}, Size={width}x{height}, Scheduler={scheduler_name}, Seed={seed_int if generator else 'System Random'}, Images={num_images_int}")
     start_time = time.time()
 
     try:
@@ -333,6 +347,7 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
             width=width,
             height=height,
             generator=generator,
+            num_images_per_prompt=num_images_int, # <-- Pass the number of images here
             # Add VAE usage here if needed for specific models that require it
             # vae=...
             # Potentially add attention slicing/xformers/etc. for memory efficiency
@@ -341,8 +356,14 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
         )
         end_time = time.time()
         print(f"Generation finished in {end_time - start_time:.2f} seconds.")
-        generated_image = output.images[0]
-        return generated_image
+        # output.images will be a list of PIL Images
+        generated_images_list = output.images
+
+        # Determine the seed to return: the one we attempted to use, or -1 if generator creation failed
+        actual_seed_used = seed_int if generator else -1 # Return the seed we used or -1
+
+        # Return the list of images and the seed
+        return generated_images_list, actual_seed_used
 
     except gr.Error as e:
          # Re-raise Gradio errors directly
@@ -358,8 +379,8 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
         if "size must be a multiple of" in error_message_lower or "invalid dimensions" in error_message_lower or "shape mismatch" in error_message_lower:
              raise gr.Error(f"Image generation failed - Invalid size '{width}x{height}' for model: {e}. Try a multiple of 64 or 8.")
         elif "out of memory" in error_message_lower or "cuda out of memory" in error_message_lower:
-             print("Hint: Try smaller image size, fewer steps, or a model that uses less VRAM.")
-             raise gr.Error(f"Out of Memory (OOM) during generation. Try smaller size/steps or select CPU. Error: {e}")
+             print("Hint: Try smaller image size, fewer steps, fewer images, or a model that uses less VRAM.") # Added "fewer images" hint
+             raise gr.Error(f"Out of Memory (OOM) during generation. Try smaller size/steps, fewer images, or select CPU. Error: {e}") # Added "fewer images" hint
         elif "runtimeerror" in error_message_lower:
              raise gr.Error(f"Runtime Error during generation: {e}. This could be a model/scheduler incompatibility or other issue.")
         elif "device-side assert" in error_message_lower or "cuda error" in error_message_lower:
@@ -369,7 +390,6 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
         else:
              # Generic catch-all for unknown errors
              raise gr.Error(f"Image generation failed: An unexpected error occurred. {e}")
-
 
 # --- Gradio Interface ---
 local_models = list_local_models(MODELS_DIR)
@@ -441,23 +461,37 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
                         value="512x512",
                         label="Image Size"
                     )
-                seed_input = gr.Number(label="Seed (-1 for random)", value=-1, precision=0) # precision=0 for integer
+                with gr.Row(): # Group Seed and Images together
+                     seed_input = gr.Number(label="Seed (-1 for random)", value=-1, precision=0) # precision=0 for integer
+                     # New slider for number of images - Removed precision=0
+                     num_images_slider = gr.Slider(
+                         minimum=1,
+                         maximum=4, # Set a reasonable max for typical hardware/VRAM
+                         value=1,
+                         step=1,
+                         label="Number of Images", # More concise label
+                         # Removed precision=0 from Slider - THIS WAS THE ISSUE
+                         interactive=True # Ensure it's interactive
+                     )
+
 
             generate_button = gr.Button("✨ Generate Image ✨", variant="primary", scale=1) # Added emojis
 
-        with gr.Column(scale=3): # Give more space to image
-            output_image = gr.Image(
-                label="Generated Image",
-                type="pil",
-                height=768, # Slightly larger preview if possible
-                width=768, # Match height for square
+        # Change output from gr.Image to gr.Gallery
+        with gr.Column(scale=3): # Give more space to output
+            # Changed from gr.Image
+            output_gallery = gr.Gallery( # Changed component type
+                label="Generated Images", # Changed label
+                show_label=True, # Ensure label is shown
+                # Removed height/width as Gallery handles layout, though you could add a fixed height if needed
+                # height=768, # Example: gr.Gallery(height=768)
                 show_share_button=True,
                 show_download_button=True,
-                interactive=False # Output image is not interactive
+                interactive=False # Output is not interactive
             )
-            # Add a status display (optional, but good for user feedback during long loads/generations)
-            # Can update this from the generate_image function using gr.Info or yield statements
-            # status_display = gr.Textbox(label="Status", interactive=False, lines=1)
+             # Add a display for the actual seed used
+            actual_seed_output = gr.Number(label="Actual Seed Used", precision=0, interactive=False)
+
 
     # Link button click to generation function
     # The `api_name` parameter allows calling this function via API if app is deployed with --share or similar
@@ -472,9 +506,11 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
             cfg_slider,
             scheduler_dropdown,
             size_dropdown,
-            seed_input
+            seed_input,
+            num_images_slider # <-- Add the new input here
         ],
-        outputs=[output_image],
+        # Change output from output_image to output_gallery, and add actual_seed_output
+        outputs=[output_gallery, actual_seed_output], # <-- Change outputs here
         api_name="generate" # Optional: For API access
     )
 
@@ -487,9 +523,10 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
         2. Select a model from the dropdown (local or Hub).
         3. Choose your processing device (GPU recommended if available).
         4. Enter your positive and optional negative prompts.
-        5. Adjust advanced settings (Steps, CFG Scale, Scheduler, Size, Seed) if needed.
+        5. Adjust advanced settings (Steps, CFG Scale, Scheduler, Size, Seed, Number of Images) if needed.
         6. Click "Generate Image".
         The first generation with a new model/device might take some time to load.
+        Generating multiple images increases VRAM and time requirements. Start with 1-2 images if you have limited VRAM.
         If you have a compatible NVIDIA GPU and want faster generation, you'll need to upgrade PyTorch to the CUDA version *after* running setup.bat. See the instructions printed in the setup console.
         """
     )
@@ -497,7 +534,6 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
 
 if __name__ == "__main__":
     print("\n--- Starting CipherCore Stable Diffusion 1.5 Generator ---")
-    # Correct the size check in AVAILABLE_DEVICES printout
     cuda_status = "CUDA available" if torch.cuda.is_available() else "CUDA not available"
     gpu_count_str = f"Found {torch.cuda.device_count()} GPU(s)." if torch.cuda.is_available() else ""
 
