@@ -11,7 +11,7 @@ This project is designed for **Windows** users seeking a simple experience throu
 
 *   **Flexible Model Selection:**
     *   Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
-    *   Access a curated list of popular SD1.5 models directly from the Hugging Face Hub (models are downloaded and cached locally on first use).
+    *   Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
 *   **Device Agnostic:**
     *   Run inference on your **CPU**.
     *   Leverage your **NVIDIA GPU** for significantly faster generation (requires installing the CUDA-enabled PyTorch version). **The default setup installs the CPU version; instructions are provided to upgrade for GPU users.**
