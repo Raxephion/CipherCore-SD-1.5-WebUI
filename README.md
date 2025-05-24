@@ -74,6 +74,18 @@ This is the recommended method for most Windows users.
         └── ...
         ```
 
+
+## 🔄 Updating the Application (Windows - Easy Method)
+
+To get the latest code, dependency updates and updated models from this repository after using the easy setup:
+
+*   Navigate to the project folder.
+*   Find the file named `update.bat`.
+*   **Double-click `update.bat`** to run it.
+*   A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
+*   **Important:** This assumes you have not made local changes that conflict with the repository updates. If `git pull` fails, you may need to handle merge conflicts manually or discard local changes.
+
+
 ## ▶️ Running the Application (Windows - Easy Method)
 
 Once the setup is complete, launch the Gradio web UI by double-clicking the `run.bat` file in the project folder.
@@ -81,15 +93,7 @@ Once the setup is complete, launch the Gradio web UI by double-clicking the `run
 *   A command prompt window will open, activate the environment, and start the application.
 *   A browser window should automatically open to the application (or a local URL will be provided in the console, usually `http://127.0.0.1:7860`).
 
-## 🔄 Updating the Application (Windows - Easy Method)
 
-To get the latest code and dependency updates from this repository after using the easy setup:
-
-*   Navigate to the project folder.
-*   Find the file named `update.bat`.
-*   **Double-click `update.bat`** to run it.
-*   A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
-*   **Important:** This assumes you have not made local changes that conflict with the repository updates. If `git pull` fails, you may need to handle merge conflicts manually or discard local changes.
 
 ---
 
