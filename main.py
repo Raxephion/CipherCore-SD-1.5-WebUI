@@ -400,7 +400,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
         f"""
         # CipherCore Stable Diffusion 1.5 Generator
         Create images with Stable Diffusion 1.5. Supports local models from `./{MODELS_DIR}`
-        and select models from Hugging Face Hub.
+        and select models from the drop-down menu.
         _Note: 'hire.fix' size option currently generates at 1024x1024._
         *Gradio webUI coming soon*
         """
