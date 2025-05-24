@@ -43,7 +43,7 @@ This project is designed for **Windows** users seeking a simple experience throu
 This is the recommended method for most Windows users.
 
 1.  **Download the project:**
-    *   Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-` (replace `Raxephion/CipherCore-SD1.5-Image-Generator-` with your actual repo path if different).
+    *   Go to the GitHub repository page: `[https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-](https://github.com/Raxephion/CipherCore-WebUI)`
     *   Click the green "Code" button.
     *   Click "Download ZIP".
 2.  **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
