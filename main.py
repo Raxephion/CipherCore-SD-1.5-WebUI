@@ -42,7 +42,7 @@ DEFAULT_SCHEDULER = "Euler" # Default scheduler on startup
 DEFAULT_HUB_MODELS = [
     "Raxephion/Typhoon-SD1.5-V1",
     "Yntec/RevAnimatedV2Rebirth",
-    "stablediffusionapi/realcartoon-anime-v11
+    "stablediffusionapi/realcartoon-anime-v11"
     # "CompVis/stable-diffusion-v1-4", # Example SD 1.4 model (might behave slightly differently)
     # Add other diffusers-compatible SD1.5 models here
 ]
