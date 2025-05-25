@@ -40,14 +40,9 @@ DEFAULT_SCHEDULER = "Euler" # Default scheduler on startup
 # List of popular Stable Diffusion 1.5 models on the Hugging Face Hub
 # You can add more Hub model IDs here
 DEFAULT_HUB_MODELS = [
-    "runwayml/stable-diffusion-v1-5",
-    "SG161222/Realistic_Vision_V6.0_B1_noVAE", # Example popular 1.5 model
-    "nitrosocke/Ghibli-Diffusion",
-    "danyloylo/sd1.5-ghibli-style-05",
-    "Bilal326/SD_1.5_DragonWarriorV2",
-    "emilianJR/epiCRealism",
+    "Raxephion/Typhoon-SD1.5-V1",
     "Yntec/RevAnimatedV2Rebirth",
-    "stablediffusionapi/realcartoon-anime-v11"
+    "stablediffusionapi/realcartoon-anime-v11
     # "CompVis/stable-diffusion-v1-4", # Example SD 1.4 model (might behave slightly differently)
     # Add other diffusers-compatible SD1.5 models here
 ]
