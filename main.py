@@ -401,8 +401,8 @@ if not model_choices:
 else:
     initial_model_choices = model_choices
     # Set a reasonable default if available
-    if "runwayml/stable-diffusion-v1-5" in model_choices:
-         initial_default_model = "runwayml/stable-diffusion-v1-5"
+    if "Raxephion/Typhoon-SD1.5-V1" in model_choices:
+         initial_default_model = "Raxephion/Typhoon-SD1.5-V1"
     elif local_models:
          initial_default_model = local_models[0] # First local model
     else:
