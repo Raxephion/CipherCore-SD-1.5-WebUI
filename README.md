@@ -17,8 +17,8 @@ This project is designed for **Windows** users seeking a simple experience throu
     *   Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
     *   Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
 *   **Device Agnostic:**
-    *   Run inference on your **CPU**.
-    *   Leverage your **NVIDIA GPU** for significantly faster generation (requires installing the CUDA-enabled PyTorch version). **The default setup installs the CPU version; instructions are provided to upgrade for GPU users.**
+    *   Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
+    *   Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version). **The default setup installs the CPU version; instructions are provided to upgrade for GPU users.**
 *   **Comprehensive Control:**
     *   **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
     *   **Inference Steps:** Control the number of denoising steps.
