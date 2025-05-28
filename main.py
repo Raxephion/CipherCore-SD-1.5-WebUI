@@ -416,9 +416,8 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
         f"""
         # CipherCore Stable Diffusion 1.5 Generator
         Create images with Stable Diffusion 1.5. Supports local models from `./{MODELS_DIR}`
-        and select models from the drop-down menu.
+        and/or select models from the drop-down menu. Selected models will auto-download if not already cached.
         _Note: 'hire.fix' size option currently generates at 1024x1024._
-        *Gradio webUI coming soon*
         """
     )
 
@@ -514,7 +513,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
         f"""
         ---
         **Usage Notes:**
-        1. Place local Diffusers-compatible SD 1.5 models into the `{MODELS_DIR}` folder.
+        1. Place local Diffusers-compatible SD 1.5 models into the `{MODELS_DIR}` folder or update model list in main.py.
         2. Select a model from the dropdown (local or Hub).
         3. Choose your processing device (GPU recommended if available).
         4. Enter your positive and optional negative prompts.
