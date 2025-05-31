@@ -42,6 +42,8 @@ DEFAULT_SCHEDULER = "Euler" # Default scheduler on startup
 some repos like stable diffusion api have 1000's of models: https://huggingface.co/stablediffusionapi
 
 sample models list:
+stablediffusionapi/realistic-vision
+
 --- add more samples
 """
 DEFAULT_HUB_MODELS = [
