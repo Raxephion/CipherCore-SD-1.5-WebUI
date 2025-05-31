@@ -37,8 +37,13 @@ SCHEDULER_MAP = {
 }
 DEFAULT_SCHEDULER = "Euler" # Default scheduler on startup
 
-# List of popular Stable Diffusion 1.5 models on the Hugging Face Hub
-# You can add more Hub model IDs here
+# You can add more models here. Simply copy and paste the name as it appears on huggingface
+"""
+some repos like stable diffusion api have 1000's of models: https://huggingface.co/stablediffusionapi
+
+sample models list:
+--- add more samples
+"""
 DEFAULT_HUB_MODELS = [
     "Raxephion/Typhoon-SD1.5-V1",
     "Yntec/RevAnimatedV2Rebirth",
