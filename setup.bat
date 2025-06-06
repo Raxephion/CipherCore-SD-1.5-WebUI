@@ -61,18 +61,10 @@ echo.
 echo --- SETUP COMPLETE ---
 echo Environment "%VENV_DIR%" created/activated and dependencies installed.
 echo.
-echo By default, the CPU version of PyTorch has been installed.
+echo The CPU version of PyTorch has been installed.
 echo Image generation will be much slower on CPU compared to a compatible NVIDIA GPU.
 echo.
-echo If you have a compatible NVIDIA GPU and drivers installed:
-echo 1. Ensure you know your CUDA version compatibility (e.g., run nvidia-smi in Command Prompt).
-echo 2. You can UPGRADE PyTorch to use your GPU acceleration.
-echo 3. Keep the virtual environment activated (it is currently activated).
-echo 4. Run the appropriate command to install the CUDA version (replace "cu121" with your CUDA version if different):
-echo    pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-echo    (Check https://pytorch.org/get-started/locally/ for other CUDA versions)
-echo.
-echo After upgrading PyTorch (if applicable), you can run the application using run.bat.
+echo You can run the application using run.bat.
 echo.
 
 goto end
