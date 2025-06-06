@@ -1,71 +1,71 @@
-# CipherCore SD1.5 – Schnelle Stable Diffusion 1.5 Lokale Bildgenerator Web-UI (CPU & GPU)
+# CipherCore SD1.5 - FAST Stable Diffusion 1.5 Local Image Generator Web UI (CPU & GPU)
 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Willkommen beim CipherCore Stable Diffusion 1.5 Generator! Diese benutzerfreundliche Gradio-Webanwendung ermöglicht es Ihnen, mühelos Bilder mit verschiedenen Stable Diffusion 1.5 Modellen zu generieren – kostenlos und lokal auf Ihrem eigenen PC. Egal, ob Sie lokale Modelle verwenden oder beliebte Modelle vom Hugging Face Hub bevorzugen, dieses Tool bietet eine einfache Oberfläche, um Ihrer Kreativität auf Ihrer CPU oder GPU freien Lauf zu lassen.
+Welcome to the CipherCore Stable Diffusion 1.5 Generator! This user-friendly Gradio web application allows you to effortlessly generate images using various Stable Diffusion 1.5 models for free locally on your own PC. Whether you have local models or prefer popular ones from the Hugging Face Hub, this tool provides a simple interface to unleash your creativity on your CPU or GPU.
 
-Dieses Projekt ist für **Windows**-Benutzer konzipiert, die eine einfache Bedienung durch leicht verständliche Batch-Dateien suchen. Es bietet aber auch manuelle Setup-Optionen für andere Plattformen oder fortgeschrittene Benutzer.
+This project is designed for **Windows** users seeking a simple experience through easy-to-use batch files, as well as providing manual setup options for other platforms or advanced users.
 
-## Anwendungs-Screenshot:
+## Application Screenshot:
 
-![Screenshot der CipherCore Stable Diffusion 1.5 UI](images/ciphercore01.png)
+![Screenshot of the CipherCore Stable Diffusion 1.5 UI](images/ciphercore01.png)
 
-## ✨ Funktionen
+## ✨ Features
 
-*   **Flexible Modellauswahl:**
-    *   Laden Sie Ihre eigenen Stable Diffusion 1.5 Modelle (im `diffusers`-Format) aus einem lokalen `./checkpoints`-Verzeichnis.
-    *   Greifen Sie direkt aus der App auf eine kuratierte Liste beliebter SD1.5-Modelle zu (Modelle werden beim ersten Gebrauch heruntergeladen und lokal zwischengespeichert).
-*   **Geräteunabhängig:**
-    *   Führen Sie Inferenz auf Ihrer **CPU** aus. (Inferenzzeit ca. 4:55 mit einem i5 der 10. Generation)
-    *   Nutzen Sie Ihre **NVIDIA GPU** für eine deutlich schnellere Generierung (Euler 30 Schritte = 8 Sekunden mit 6 GB VRAM) (erfordert die Installation der CUDA-fähigen PyTorch-Version).
-*   **Umfassende Kontrolle:**
-    *   **Positive & Negative Prompts:** Leiten Sie die KI mit detaillierten Beschreibungen dessen, was Sie möchten (und was nicht).
-    *   **Inference Steps:** Steuern Sie die Anzahl der Denoising-Schritte.
-    *   **CFG Scale:** Passen Sie an, wie stark sich das Bild an Ihren Prompt halten soll.
-    *   **Schedulers:** Experimentieren Sie mit verschiedenen Sampling-Algorithmen (Euler, DPM++ 2M, DDPM, LMS).
-    *   **Bildgrößen:** Wählen Sie aus Standard-SD1.5-Auflösungen sowie einer "hire.fix"-Option (interpretiert als 1024x1024).
-    *   **Seed Control:** Legen Sie einen bestimmten Seed für reproduzierbare Ergebnisse fest oder verwenden Sie -1 für zufällige Generierung.
-*   **Benutzerfreundliche Oberfläche:**
-    *   Saubere und intuitive Gradio-UI.
-    *   Organisierte Steuerelemente mit erweiterten Einstellungen in einem Akkordeon für ein aufgeräumteres Aussehen.
-    *   Direkte Bildanzeige mit Download- und Freigabeoptionen.
-*   **Sicherheit geht vor (Hinweis):** Der integrierte Sicherheits-Checker ist in dieser Version **deaktiviert**, um maximale kreative Freiheit zu ermöglichen. Bitte seien Sie sich der Inhalte bewusst, die Sie generieren.
+*   **Flexible Model Selection:**
+    *   Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
+    *   Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
+*   **Device Agnostic:**
+    *   Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
+    *   Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version).
+*   **Comprehensive Control:**
+    *   **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
+    *   **Inference Steps:** Control the number of denoising steps.
+    *   **CFG Scale:** Adjust how strongly the image should conform to your prompt.
+    *   **Schedulers:** Experiment with different sampling algorithms (Euler, DPM++ 2M, DDPM, LMS).
+    *   **Image Sizes:** Choose from standard SD1.5 resolutions, plus a "hire.fix" option (interpreted as 1024x1024).
+    *   **Seed Control:** Set a specific seed for reproducible results or use -1 for random generation.
+*   **User-Friendly Interface:**
+    *   Clean and intuitive Gradio UI.
+    *   Organized controls with advanced settings in an accordion for a cleaner look.
+    *   Direct image display with download and share options.
+*   **Safety First (Note):** The built-in safety checker is **disabled** in this version to allow for maximum creative freedom. Please be mindful of the content you generate.
 
-## 🚀 Voraussetzungen
+## 🚀 Prerequisites
 
-*   **Windows-Betriebssystem:** Die bereitgestellten Batch-Dateien (`.bat`) sind für Windows. Für andere Betriebssysteme folgen Sie den manuellen Setup-Schritten unten.
-*   **Python:** 3.8 oder höher. Stellen Sie sicher, dass Python installiert und zum PATH Ihres Systems hinzugefügt wurde (normalerweise eine Option während der Installation). Sie können Python von [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/) herunterladen.
-*   **Git:** (Erforderlich für manuelle Einrichtung und Aktualisierung) Zum Klonen des Repository.
+*   **Windows Operating System:** The provided batch files (`.bat`) are for Windows. For other operating systems, follow the manual setup steps below.
+*   **Python:** 3.8 or higher. Ensure Python is installed and added to your system's PATH (usually an option during installation). You can download Python from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
+*   **Git:** (Required for manual setup and updating) For cloning the repository.
 *   **Hardware:**
-    *   Eine moderne CPU ist erforderlich.
-    *   Für GPU-Beschleunigung (optional, aber für Geschwindigkeit dringend empfohlen) eine kompatible NVIDIA-GPU mit aktuellen CUDA-Treibern. Mindestens 6–8 GB VRAM werden für die Generierung von 512x512 empfohlen, mehr für größere Größen. **Wichtig:** Die richtige CUDA-Version für Ihre Treiber ist entscheidend. Verwenden Sie `nvidia-smi` in der Eingabeaufforderung, um die mit Ihrem Treiber kompatible CUDA-Version zu überprüfen.
-*   **Internetverbindung:** Erforderlich zum Herunterladen von Modellen vom Hugging Face Hub und für Aktualisierungen.
+    *   A modern CPU is required.
+    *   For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.  **Important:** The correct CUDA version for your drivers is critical. Use `nvidia-smi` in the command prompt to check your driver's compatible CUDA version.
+*   **Internet Connection:** Required for downloading models from Hugging Face Hub and for updates.
 
-## 📦 Einfache Einrichtung (Windows – Herunterladen & Ausführen)
+## 📦 Easy Setup (Windows - Download & Run)
 
-Dies ist die empfohlene Methode für die meisten Windows-Benutzer. **Es werden zwei separate Setup-Skripte bereitgestellt:** eines für CPU-Inferenz und eines für GPU-Inferenz.
+This is the recommended method for most Windows users.  **Two separate setup scripts are provided:** one for CPU inference and one for GPU inference.
 
-1.  **Projekt herunterladen:**
-    *   Gehen Sie zur GitHub-Repository-Seite: `https://github.com/Raxephion/CipherCore-WebUI`
-    *   Klicken Sie auf die grüne Schaltfläche "Code".
-    *   Klicken Sie auf "Download ZIP".
-2.  **ZIP entpacken:** Entpacken Sie die heruntergeladene ZIP-Datei an einen Ort auf Ihrem Computer (z. B. Ihren Dokumente-Ordner oder Desktop). Dadurch wird ein Ordner wie `CipherCore-SD1.5-Image-Generator-main` (oder ähnlich) erstellt. Benennen Sie ihn bei Bedarf um.
-3.  **Wählen Sie Ihr Setup-Skript:**
-    *   **Für CPU-Inferenz:** Führen Sie `setup-CPU.bat` aus. Dadurch wird die CPU-Version von PyTorch installiert.
-    *   **Für GPU-Inferenz:** Führen Sie `setup-GPU.bat` aus. Dadurch wird versucht, die CUDA-fähige Version von PyTorch zu installieren.
+1.  **Download the project:**
+    *   Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-WebUI`
+    *   Click the green "Code" button.
+    *   Click "Download ZIP".
+2.  **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
+3.  **Choose Your Setup Script:**
+    *   **For CPU Inference:** Run `setup-CPU.bat`.  This will install the CPU version of PyTorch.
+    *   **For GPU Inference:** Run `setup-GPU.bat`. This will attempt to install the CUDA-enabled version of PyTorch.
 
-4.  **Setup-Skript ausführen:**
-    *   Navigieren Sie in den entpackten Ordner.
-    *   **Doppelklicken Sie entweder auf `setup-CPU.bat` oder `setup-GPU.bat`**, je nachdem, ob Sie CPU- oder GPU-Inferenz wünschen.
-    *   Ein Eingabeaufforderungsfenster wird geöffnet. Befolgen Sie die Anweisungen im Fenster. Dieses Skript erstellt eine virtuelle Python-Umgebung (`venv`), installiert alle erforderlichen Kernabhängigkeiten und installiert die entsprechende Version von PyTorch.
-    *   **Wichtig:** Lesen Sie die Ausgabe in der Eingabeaufforderung während und nach Abschluss des Skripts sorgfältig durch.
-        *   **Wenn bei Verwendung von `setup-GPU.bat` die CUDA-Installation fehlschlägt:** Das Skript enthält Anweisungen zur Fehlerbehebung bei der CUDA-Installation oder zur Installation der CPU-Version von PyTorch als Fallback. Stellen Sie sicher, dass Sie eine kompatible NVIDIA-GPU, die richtigen Treiber haben und dass Sie Ihre CUDA-Version mit `nvidia-smi` überprüft haben. Möglicherweise müssen Sie `setup-GPU.bat` bearbeiten, um die richtige CUDA-Version anzugeben.
+4.  **Run the Setup Script:**
+    *   Navigate into the extracted folder.
+    *   **Double-click either `setup-CPU.bat` or `setup-GPU.bat`** depending on whether you want CPU or GPU inference.
+    *   A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the appropriate version of PyTorch.
+    *   **Important:** Read the output in the command prompt carefully during and after the script finishes.
+        *   **If using `setup-GPU.bat` and the CUDA installation fails:**  The script will provide instructions on how to troubleshoot the CUDA installation or how to install the CPU version of PyTorch as a fallback.  Ensure you have a compatible NVIDIA GPU, the correct drivers, and that you've checked your CUDA version using `nvidia-smi`.  You may need to edit `setup-GPU.bat` to specify the correct CUDA version.
 
-5.  **Lokale Modelle vorbereiten (Optional):**
-    *   Erstellen Sie im extrahierten Projektordner ein Verzeichnis namens `checkpoints` (falls das Setup-Skript es nicht erstellt hat).
-    *   Platzieren Sie Ihre Stable Diffusion 1.5 Modelle (im `diffusers`-Format – d. h. jedes Modell ist ein Ordner mit Dateien wie `model_index.json`, `unet/`, `vae/` usw.) im Verzeichnis `checkpoints`.
-        Beispielstruktur:
+5.  **Prepare Local Models (Optional):**
+    *   Inside the extracted project folder, create a directory named `checkpoints` (if the setup script didn't create it).
+    *   Place your Stable Diffusion 1.5 models (in `diffusers` format – meaning each model is a folder containing files like `model_index.json`, `unet/`, `vae/`, etc.) inside the `checkpoints` directory.
+        Example structure:
         ```
         YourProjectFolder/
         ├── checkpoints/
@@ -81,104 +81,92 @@ Dies ist die empfohlene Methode für die meisten Windows-Benutzer. **Es werden z
         ├── setup-GPU.bat
         ├── run.bat
         ├── update.bat
-        ├── images/              <-- Dieser Ordner sollte existieren
-        │   └── ciphercore01.png   <-- Ihre Bilddatei sollte hier sein
+        ├── images/              <-- This folder should exist
+        │   └── ciphercore01.png   <-- Your image file should be here
         └── ...
         ```
 
-## 🔄 Aktualisieren der Anwendung (Windows – Einfache Methode)
 
-So erhalten Sie nach der einfachen Einrichtung den neuesten Code, Abhängigkeitsaktualisierungen und aktualisierte Modelle aus diesem Repository:
+## 🔄 Updating the Application (Windows - Easy Method)
 
-*   Navigieren Sie zum Projektordner.
-*   Suchen Sie die Datei mit dem Namen `update.bat`.
-*   **Doppelklicken Sie auf `update.bat`**, um sie auszuführen.
-*   Ein Eingabeaufforderungsfenster wird geöffnet, zieht die neuesten Änderungen aus dem GitHub-Repository und aktualisiert die Python-Pakete in Ihrer virtuellen Umgebung.
-*   **Wichtig:** Dies setzt voraus, dass Sie keine lokalen Änderungen vorgenommen haben, die mit den Repository-Aktualisierungen in Konflikt stehen. Wenn `git pull` fehlschlägt, müssen Sie möglicherweise Merge-Konflikte manuell beheben oder lokale Änderungen verwerfen.
+To get the latest code, dependency updates and updated models from this repository after using the easy setup:
 
-## ▶️ Ausführen der Anwendung (Windows – Einfache Methode)
+*   Navigate to the project folder.
+*   Find the file named `update.bat`.
+*   **Double-click `update.bat`** to run it.
+*   A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
+*   **Important:** This assumes you have not made local changes that conflict with the repository updates. If `git pull` fails, you may need to handle merge conflicts manually or discard local changes.
 
-Sobald das Setup abgeschlossen ist, starten Sie die Gradio-Web-UI, indem Sie im Projektordner auf die Datei `run.bat` doppelklicken.
 
-*   Ein Eingabeaufforderungsfenster wird geöffnet, aktiviert die Umgebung und startet die Anwendung.
-*   Ein Browserfenster sollte sich automatisch mit der Anwendung öffnen (oder eine lokale URL wird in der Konsole angegeben, normalerweise `http://127.0.0.1:7860`).
+## ▶️ Running the Application (Windows - Easy Method)
+
+Once the setup is complete, launch the Gradio web UI by double-clicking the `run.bat` file in the project folder.
+
+*   A command prompt window will open, activate the environment, and start the application.
+*   A browser window should automatically open to the application (or a local URL will be provided in the console, usually `http://127.0.0.1:7860`).
+
+
 
 ---
 
-## ⚙️ Manuelle Einrichtung (Windows – Git-Clone)
+## ⚙️ Manual Setup (Windows - Git Clone)
 
-Diese Methode ist für Windows-Benutzer, die mit Git vertraut sind.
+This method is for Windows users who are comfortable with Git.
 
-1.  **Repository klonen:** Öffnen Sie die Eingabeaufforderung oder PowerShell, navigieren Sie zu dem Ort, an dem Sie das Projekt herunterladen möchten, und führen Sie Folgendes aus:
-
+1.  **Clone the Repository:** Open Command Prompt or PowerShell, navigate to where you want to download the project, and run:
     ```bash
     git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
     cd CipherCore-SD1.5-Image-Generator-
     ```
+    *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
+2.  **Proceed with Batch Files:** Continue by following **Step 3 (Choose Your Setup Script)**, **Step 4 (Run the Setup Script)** (for your *own* checkpoints), **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above. Make sure to manually create the `images` folder and add `ciphercore01.png` if you use this method and they aren't already in the cloned repo.
 
-    *(Hinweis: Wenn Sie in einen anderen Verzeichnisnamen geklont haben, ersetzen Sie `CipherCore-SD1.5-Image-Generator-` oben durch Ihren gewählten Verzeichnisnamen.)*
-2.  **Mit Batch-Dateien fortfahren:** Fahren Sie fort, indem Sie **Schritt 3 (Wählen Sie Ihr Setup-Skript)**, **Schritt 4 (Führen Sie das Setup-Skript aus)** (für Ihre *eigenen* Checkpoints), **Ausführen** und **Aktualisieren** aus dem Abschnitt **📦 Einfache Einrichtung (Windows – Herunterladen & Ausführen)** oben befolgen. Stellen Sie sicher, dass Sie den Ordner `images` manuell erstellen und `ciphercore01.png` hinzufügen, wenn Sie diese Methode verwenden und diese noch nicht im geklonten Repository vorhanden sind.
+## 🛠️ Manual Setup, Running & Updating (For Linux/macOS or Advanced Users)
 
-## 🛠️ Manuelle Einrichtung, Ausführen und Aktualisieren (Für Linux/macOS oder fortgeschrittene Benutzer)
+If you are not on Windows or prefer a manual command-line approach:
 
-Wenn Sie nicht unter Windows sind oder einen manuellen Befehlszeilenansatz bevorzugen:
-
-1.  **Repository klonen:**
-
+1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
     cd CipherCore-SD1.5-Image-Generator-
     ```
-
-2.  **Erstellen und Aktivieren einer virtuellen Umgebung:**
-
+2.  **Create and Activate a Virtual Environment:**
     ```bash
     python -m venv venv
     source venv/bin/activate
     ```
-
-3.  **Abhängigkeiten installieren (einschließlich PyTorch):**
-
-    *   Installieren Sie die Kernabhängigkeiten (dies umfasst `gradio`, `diffusers`, `transformers`, `huggingface_hub`, `Pillow`):
-
+3.  **Install Dependencies (including PyTorch):**
+    *   Install core dependencies (this includes `gradio`, `diffusers`, `transformers`, `huggingface_hub`, `Pillow`):
         ```bash
         pip install -r requirements.txt
         ```
-
-    *   Installieren Sie PyTorch: **Dieser Schritt ist entscheidend und hängt von Ihrer Hardware ab.**
-
-        *   **Nur für CPU:**
-
+    *   Install PyTorch: **This step is crucial and depends on your hardware.**
+        *   **For CPU ONLY:**
             ```bash
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
             ```
-
-        *   **Für NVIDIA GPU mit CUDA (Empfohlen für Geschwindigkeit):** Führen Sie zuerst `nvidia-smi` aus, um die richtige CUDA-Version für Ihr System zu ermitteln. Suchen Sie dann auf der PyTorch-Website den entsprechenden Befehl für Ihre CUDA-Version: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Beispiel für CUDA 11.8:
-
+        *   **For NVIDIA GPU with CUDA (Recommended for speed):** First, run `nvidia-smi` to determine the correct CUDA version for your system.  Then, find the appropriate command for your CUDA version on the PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Example for CUDA 11.8:
             ```bash
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
             ```
-
-4.  **Lokale Modelle vorbereiten (Optional):** Befolgen Sie Schritt 4 aus dem Abschnitt **📦 Einfache Einrichtung (Windows – Herunterladen & Ausführen)** oben (der Teil über den `checkpoints`-Ordner).
-5.  **Anwendung ausführen:**
-
+4.  **Prepare Local Models (Optional):** Follow Step 4 from the **📦 Easy Setup (Windows - Download & Run)** section above (the part about the `checkpoints` folder).
+5.  **Run the Application:**
     ```bash
     python main.py
     ```
+    Ensure your virtual environment is activated (`source venv/bin/activate`) before running this command.
+6.  **Updating Manually:**
+    *   Navigate to the project directory in your terminal.
+    *   Ensure your virtual environment is activated (`source venv/bin/activate`).
+    *   Pull the latest code: `git pull`
+    *   Update dependencies: `pip install -r requirements.txt --upgrade`
+    *   Deactivate the environment: `deactivate`
 
-    Stellen Sie sicher, dass Ihre virtuelle Umgebung aktiviert ist (`source venv/bin/activate`), bevor Sie diesen Befehl ausführen.
-6.  **Manuelles Aktualisieren:**
+## ⚙️ Uninstall:
 
-    *   Navigieren Sie in Ihrem Terminal zum Projektverzeichnis.
-    *   Stellen Sie sicher, dass Ihre virtuelle Umgebung aktiviert ist (`source venv/bin/activate`).
-    *   Ziehen Sie den neuesten Code: `git pull`
-    *   Aktualisieren Sie die Abhängigkeiten: `pip install -r requirements.txt --upgrade`
-    *   Deaktivieren Sie die Umgebung: `deactivate`
+1.  **Delete the main directory (folder) - this app is completely portable.**
 
-## ⚙️ Deinstallation:
 
-1.  **Löschen Sie das Hauptverzeichnis (den Ordner) – diese App ist vollständig portabel.**
+## 📄 License
 
-## 📄 Lizenz
-
-Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe die Datei [LICENSE](https://opensource.org/licenses/MIT) für Details.
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
