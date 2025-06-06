@@ -18,7 +18,7 @@ This project is designed for **Windows** users seeking a simple experience throu
     *   Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
 *   **Device Agnostic:**
     *   Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
-    *   Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version). **The default setup installs the CPU version; instructions are provided to upgrade for GPU users.**
+    *   Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version).
 *   **Comprehensive Control:**
     *   **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
     *   **Inference Steps:** Control the number of denoising steps.
@@ -39,26 +39,31 @@ This project is designed for **Windows** users seeking a simple experience throu
 *   **Git:** (Required for manual setup and updating) For cloning the repository.
 *   **Hardware:**
     *   A modern CPU is required.
-    *   For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.
+    *   For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.  **Important:** The correct CUDA version for your drivers is critical. Use `nvidia-smi` in the command prompt to check your driver's compatible CUDA version.
 *   **Internet Connection:** Required for downloading models from Hugging Face Hub and for updates.
 
 ## 📦 Easy Setup (Windows - Download & Run)
 
-This is the recommended method for most Windows users.
+This is the recommended method for most Windows users.  **Two separate setup scripts are provided:** one for CPU inference and one for GPU inference.
 
 1.  **Download the project:**
     *   Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-WebUI`
     *   Click the green "Code" button.
     *   Click "Download ZIP".
 2.  **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
-3.  **Run the Setup Script:**
+3.  **Choose Your Setup Script:**
+    *   **For CPU Inference:** Run `setup-CPU.bat`.  This will install the CPU version of PyTorch.
+    *   **For GPU Inference:** Run `setup-GPU.bat`. This will attempt to install the CUDA-enabled version of PyTorch.
+
+4.  **Run the Setup Script:**
     *   Navigate into the extracted folder.
-    *   Find the file named `setup.bat`.
-    *   **Double-click `setup.bat`** to run it.
-    *   A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the **CPU version** of PyTorch by default.
-    *   **Important:** Read the output in the command prompt carefully during and after the script finishes. It will provide specific commands if you wish to upgrade PyTorch to the GPU-accelerated CUDA version, which is necessary for fast generation on an NVIDIA GPU. You must run this upgrade command manually if you have a GPU and want to use it.
-4.  **Prepare Local Models (Optional):**
-    *   Inside the extracted project folder, create a directory named `checkpoints` (if `setup.bat` didn't create it).
+    *   **Double-click either `setup-CPU.bat` or `setup-GPU.bat`** depending on whether you want CPU or GPU inference.
+    *   A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the appropriate version of PyTorch.
+    *   **Important:** Read the output in the command prompt carefully during and after the script finishes.
+        *   **If using `setup-GPU.bat` and the CUDA installation fails:**  The script will provide instructions on how to troubleshoot the CUDA installation or how to install the CPU version of PyTorch as a fallback.  Ensure you have a compatible NVIDIA GPU, the correct drivers, and that you've checked your CUDA version using `nvidia-smi`.  You may need to edit `setup-GPU.bat` to specify the correct CUDA version.
+
+5.  **Prepare Local Models (Optional):**
+    *   Inside the extracted project folder, create a directory named `checkpoints` (if the setup script didn't create it).
     *   Place your Stable Diffusion 1.5 models (in `diffusers` format – meaning each model is a folder containing files like `model_index.json`, `unet/`, `vae/`, etc.) inside the `checkpoints` directory.
         Example structure:
         ```
@@ -72,7 +77,8 @@ This is the recommended method for most Windows users.
         │       └── ...
         ├── main.py
         ├── requirements.txt
-        ├── setup.bat
+        ├── setup-CPU.bat
+        ├── setup-GPU.bat
         ├── run.bat
         ├── update.bat
         ├── images/              <-- This folder should exist
@@ -113,7 +119,7 @@ This method is for Windows users who are comfortable with Git.
     cd CipherCore-SD1.5-Image-Generator-
     ```
     *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
-2.  **Proceed with Batch Files:** Continue by following **Step 2 (Run the Setup Script)**, **Step 4 (Prepare Local Models)** (for your *own* checkpoints), **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above. Make sure to manually create the `images` folder and add `ciphercore01.png` if you use this method and they aren't already in the cloned repo.
+2.  **Proceed with Batch Files:** Continue by following **Step 3 (Choose Your Setup Script)**, **Step 4 (Run the Setup Script)** (for your *own* checkpoints), **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above. Make sure to manually create the `images` folder and add `ciphercore01.png` if you use this method and they aren't already in the cloned repo.
 
 ## 🛠️ Manual Setup, Running & Updating (For Linux/macOS or Advanced Users)
 
@@ -139,7 +145,7 @@ If you are not on Windows or prefer a manual command-line approach:
             ```bash
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
             ```
-        *   **For NVIDIA GPU with CUDA (Recommended for speed):** Find the appropriate command for your CUDA version (check PyTorch's website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)). Example for CUDA 11.8:
+        *   **For NVIDIA GPU with CUDA (Recommended for speed):** First, run `nvidia-smi` to determine the correct CUDA version for your system.  Then, find the appropriate command for your CUDA version on the PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Example for CUDA 11.8:
             ```bash
             pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
             ```
