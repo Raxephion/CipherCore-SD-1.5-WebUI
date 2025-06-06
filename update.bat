@@ -4,6 +4,7 @@ echo Updating the CipherCore Stable Diffusion 1.5 Generator...
 :: Define the virtual environment directory name (must match setup.bat and run.bat)
 set VENV_DIR=venv
 set REPO_URL=https://github.com/Raxephion/CipherCore-SD-1.5-WebUI
+set TEMP_DIR=temp_extraction
 
 :: Change directory to the script's location
 cd /d "%~dp0"
@@ -14,18 +15,35 @@ if %errorlevel% neq 0 (
     echo Git not found. Attempting to initialize a Git repository...
     echo (This will download the latest code but won't track future changes without Git installed.)
 
+    :: Create a temporary directory for extraction
+    mkdir %TEMP_DIR%
+    if %errorlevel% neq 0 (
+        echo Error: Failed to create temporary directory.
+        goto end
+    )
+
     :: Download the repository as a ZIP file if Git is not installed
     powershell -Command "(New-Object System.Net.WebClient).DownloadFile('%REPO_URL%/archive/refs/heads/main.zip', 'repo.zip')"
     if %errorlevel% neq 0 (
         echo Error: Failed to download repository as ZIP. Check internet connection.
+        rmdir /s /q %TEMP_DIR% 2>nul
         goto end
     )
 
-    echo Extracting ZIP file...
-    powershell -Command "Expand-Archive -Path 'repo.zip' -DestinationPath '%CD%'"
+    echo Extracting ZIP file to temporary directory...
+    powershell -Command "Expand-Archive -Path 'repo.zip' -DestinationPath '%TEMP_DIR%'"
     if %errorlevel% neq 0 (
         echo Error: Failed to extract ZIP file.
+        del repo.zip
+        rmdir /s /q %TEMP_DIR% 2>nul
         goto end
+    )
+
+    echo Moving files from temporary directory to current directory...
+    for /d %%d in (%TEMP_DIR%\*) do (
+        for %%f in ("%%d\*") do (
+            move /y "%%f" "." >nul
+        )
     )
 
     echo Removing ZIP file...
@@ -34,8 +52,11 @@ if %errorlevel% neq 0 (
         echo Warning: Failed to delete ZIP file.
     )
 
-    ::Rename the directory
-    ren "CipherCore-SD-1.5-WebUI-main" "."
+    echo Removing temporary directory...
+    rmdir /s /q %TEMP_DIR%
+    if %errorlevel% neq 0 (
+        echo Warning: Failed to delete temporary directory.
+    )
 
     echo Successfully downloaded and extracted latest code from GitHub.
     echo Please install git for proper version control - https://git-scm.com/
