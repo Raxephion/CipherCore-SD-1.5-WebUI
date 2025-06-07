@@ -11,162 +11,117 @@ This project is designed for **Windows** users seeking a simple experience throu
 
 ![Screenshot of the CipherCore Stable Diffusion 1.5 UI](images/ciphercore01.png)
 
+---
+
 ## ✨ Features
 
-*   **Flexible Model Selection:**
-    *   Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
-    *   Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
-*   **Device Agnostic:**
-    *   Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
-    *   Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version).
-*   **Comprehensive Control:**
-    *   **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
-    *   **Inference Steps:** Control the number of denoising steps.
-    *   **CFG Scale:** Adjust how strongly the image should conform to your prompt.
-    *   **Schedulers:** Experiment with different sampling algorithms (Euler, DPM++ 2M, DDPM, LMS).
-    *   **Image Sizes:** Choose from standard SD1.5 resolutions, plus a "hire.fix" option (interpreted as 1024x1024).
-    *   **Seed Control:** Set a specific seed for reproducible results or use -1 for random generation.
-*   **User-Friendly Interface:**
-    *   Clean and intuitive Gradio UI.
-    *   Organized controls with advanced settings in an accordion for a cleaner look.
-    *   Direct image display with download and share options.
-*   **Safety First (Note):** The built-in safety checker is **disabled** in this version to allow for maximum creative freedom. Please be mindful of the content you generate.
+* **Flexible Model Selection:**
+  * Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
+  * Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
+* **Device Agnostic:**
+  * Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
+  * Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version).
+* **Comprehensive Control:**
+  * **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
+  * **Inference Steps:** Control the number of denoising steps.
+  * **CFG Scale:** Adjust how strongly the image should conform to your prompt.
+  * **Schedulers:** Experiment with different sampling algorithms (Euler, DPM++ 2M, DDPM, LMS).
+  * **Image Sizes:** Choose from standard SD1.5 resolutions, plus a "hire.fix" option (interpreted as 1024x1024).
+  * **Seed Control:** Set a specific seed for reproducible results or use -1 for random generation.
+* **User-Friendly Interface:**
+  * Clean and intuitive Gradio UI.
+  * Organized controls with advanced settings in an accordion for a cleaner look.
+  * Direct image display with download and share options.
+* **Safety First (Note):** The built-in safety checker is **disabled** in this version to allow for maximum creative freedom. Please be mindful of the content you generate.
+
+---
+
+## 🔥 Why CipherCore?
+
+Unlike some other UIs (*cough* Forge), **CipherCore is built for speed** — and not just on paper.
+
+In a direct head-to-head test using **Stable Diffusion 1.5**, with the **same model**, **same settings**, **same seed**, and on the **same CPU-only machine**:
+
+| Web UI         | Steps | Scheduler | Time per Step | Total Time |
+|----------------|-------|-----------|----------------|-------------|
+| **CipherCore** | 20    | Euler     | 20.72 sec      | **6:54**     |
+| **Forge**      | 20    | Euler     | 34.78 sec      | **11:35**    |
+
+That’s nearly **twice as fast** — no exaggeration.
+
+CipherCore is **heavily optimized** for both CPU and GPU environments:
+- Lean startup and efficient memory usage.
+- Clean Gradio architecture with no background bloat.
+- Lightning-fast local caching and model handling.
+- Optimized for low-VRAM systems (especially on GPU).
+
+Expect even better results when running on GPU — those benchmarks are coming soon.
+
+---
 
 ## 🚀 Prerequisites
 
-*   **Windows Operating System:** The provided batch files (`.bat`) are for Windows. For other operating systems, follow the manual setup steps below.
-*   **Python:** 3.8 or higher. Ensure Python is installed and added to your system's PATH (usually an option during installation). You can download Python from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
-*   **Git:** (Required for manual setup and updating) For cloning the repository.
-*   **Hardware:**
-    *   A modern CPU is required.
-    *   For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.  **Important:** The correct CUDA version for your drivers is critical. Use `nvidia-smi` in the command prompt to check your driver's compatible CUDA version.
-*   **Internet Connection:** Required for downloading models from Hugging Face Hub and for updates.
+* **Windows Operating System:** The provided batch files (`.bat`) are for Windows. For other operating systems, follow the manual setup steps below.
+* **Python:** 3.8 or higher. Ensure Python is installed and added to your system's PATH (usually an option during installation). You can download Python from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
+* **Git:** (Required for manual setup and updating) For cloning the repository.
+* **Hardware:**
+  * A modern CPU is required.
+  * For GPU acceleration (optional but highly recommended for speed), a compatible NVIDIA GPU with up-to-date CUDA drivers. At least 6-8GB VRAM is recommended for 512x512 generation, more for larger sizes.
+  * **Important:** The correct CUDA version for your drivers is critical. Use `nvidia-smi` in the command prompt to check your driver's compatible CUDA version.
+* **Internet Connection:** Required for downloading models from Hugging Face Hub and for updates.
+
+---
 
 ## 📦 Easy Setup (Windows - Download & Run)
 
-This is the recommended method for most Windows users.  **Two separate setup scripts are provided:** one for CPU inference and one for GPU inference.
+This is the recommended method for most Windows users. **Two separate setup scripts are provided:** one for CPU inference and one for GPU inference.
 
-1.  **Download the project:**
-    *   Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-WebUI`
-    *   Click the green "Code" button.
-    *   Click "Download ZIP".
-2.  **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
-3.  **Choose Your Setup Script:**
-    *   **For CPU Inference:** Run `setup-CPU.bat`.  This will install the CPU version of PyTorch.
-    *   **For GPU Inference:** Run `setup-GPU.bat`. This will attempt to install the CUDA-enabled version of PyTorch.
+1. **Download the project:**
+   * Go to the GitHub repository page: `https://github.com/Raxephion/CipherCore-WebUI`
+   * Click the green "Code" button.
+   * Click "Download ZIP".
 
-4.  **Run the Setup Script:**
-    *   Navigate into the extracted folder.
-    *   **Double-click either `setup-CPU.bat` or `setup-GPU.bat`** depending on whether you want CPU or GPU inference.
-    *   A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the appropriate version of PyTorch.
-    *   **Important:** Read the output in the command prompt carefully during and after the script finishes.
-        *   **If using `setup-GPU.bat` and the CUDA installation fails:**  The script will provide instructions on how to troubleshoot the CUDA installation or how to install the CPU version of PyTorch as a fallback.  Ensure you have a compatible NVIDIA GPU, the correct drivers, and that you've checked your CUDA version using `nvidia-smi`.  You may need to edit `setup-GPU.bat` to specify the correct CUDA version.
+2. **Extract the ZIP:** Extract the downloaded ZIP file to a location on your computer (e.g., your Documents folder or Desktop). This will create a folder like `CipherCore-SD1.5-Image-Generator-main` (or similar). Rename it if you prefer.
 
-5.  **Prepare Local Models (Optional):**
-    *   Inside the extracted project folder, create a directory named `checkpoints` (if the setup script didn't create it).
-    *   Place your Stable Diffusion 1.5 models (in `diffusers` format – meaning each model is a folder containing files like `model_index.json`, `unet/`, `vae/`, etc.) inside the `checkpoints` directory.
-        Example structure:
-        ```
-        YourProjectFolder/
-        ├── checkpoints/
-        │   ├── my-custom-model-1/
-        │   │   ├── model_index.json
-        │   │   ├── unet/
-        │   │   └── ...
-        │   └── another-local-model/
-        │       └── ...
-        ├── main.py
-        ├── requirements.txt
-        ├── setup-CPU.bat
-        ├── setup-GPU.bat
-        ├── run.bat
-        ├── update.bat
-        ├── images/              <-- This folder should exist
-        │   └── ciphercore01.png   <-- Your image file should be here
-        └── ...
-        ```
+3. **Choose Your Setup Script:**
+   * **For CPU Inference:** Run `setup-CPU.bat`. This will install the CPU version of PyTorch.
+   * **For GPU Inference:** Run `setup-GPU.bat`. This will attempt to install the CUDA-enabled version of PyTorch.
 
+4. **Run the Setup Script:**
+   * Navigate into the extracted folder.
+   * **Double-click either `setup-CPU.bat` or `setup-GPU.bat`** depending on whether you want CPU or GPU inference.
+   * A command prompt window will open. Follow the instructions in the window. This script will create a Python virtual environment (`venv`), install all necessary core dependencies, and install the appropriate version of PyTorch.
+   * **Important:** Read the output in the command prompt carefully during and after the script finishes.
+     * **If using `setup-GPU.bat` and the CUDA installation fails:** The script will provide instructions on how to troubleshoot the CUDA installation or how to install the CPU version of PyTorch as a fallback.
+
+5. **Prepare Local Models (Optional):**
+   * Inside the extracted project folder, create a directory named `checkpoints` (if the setup script didn't create it).
+   * Place your Stable Diffusion 1.5 models (in `diffusers` format – each model is a folder containing files like `model_index.json`, `unet/`, `vae/`, etc.) inside the `checkpoints` directory.
+
+---
 
 ## 🔄 Updating the Application (Windows - Easy Method)
 
 To get the latest code, dependency updates and updated models from this repository after using the easy setup:
 
-*   Navigate to the project folder.
-*   Find the file named `update.bat`.
-*   **Double-click `update.bat`** to run it.
-*   A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
-*   **Important:** This assumes you have not made local changes that conflict with the repository updates. If `git pull` fails, you may need to handle merge conflicts manually or discard local changes.
+* Navigate to the project folder.
+* Double-click `update.bat` to run it.
+* A command prompt window will open and pull the latest changes from the GitHub repository and upgrade the Python packages in your virtual environment.
 
+---
 
 ## ▶️ Running the Application (Windows - Easy Method)
 
 Once the setup is complete, launch the Gradio web UI by double-clicking the `run.bat` file in the project folder.
 
-*   A command prompt window will open, activate the environment, and start the application.
-*   A browser window should automatically open to the application (or a local URL will be provided in the console, usually `http://127.0.0.1:7860`).
-
-
+* A command prompt window will open, activate the environment, and start the application.
+* A browser window should automatically open to the application (or a local URL will be provided in the console, usually `http://127.0.0.1:7860`).
 
 ---
 
 ## ⚙️ Manual Setup (Windows - Git Clone)
 
-This method is for Windows users who are comfortable with Git.
-
-1.  **Clone the Repository:** Open Command Prompt or PowerShell, navigate to where you want to download the project, and run:
-    ```bash
-    git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
-    cd CipherCore-SD1.5-Image-Generator-
-    ```
-    *(Note: If you cloned to a different directory name, replace `CipherCore-SD1.5-Image-Generator-` above with your chosen directory name.)*
-2.  **Proceed with Batch Files:** Continue by following **Step 3 (Choose Your Setup Script)**, **Step 4 (Run the Setup Script)** (for your *own* checkpoints), **Running**, and **Updating** instructions from the **📦 Easy Setup (Windows - Download & Run)** section above. Make sure to manually create the `images` folder and add `ciphercore01.png` if you use this method and they aren't already in the cloned repo.
-
-## 🛠️ Manual Setup, Running & Updating (For Linux/macOS or Advanced Users)
-
-If you are not on Windows or prefer a manual command-line approach:
-
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
-    cd CipherCore-SD1.5-Image-Generator-
-    ```
-2.  **Create and Activate a Virtual Environment:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate
-    ```
-3.  **Install Dependencies (including PyTorch):**
-    *   Install core dependencies (this includes `gradio`, `diffusers`, `transformers`, `huggingface_hub`, `Pillow`):
-        ```bash
-        pip install -r requirements.txt
-        ```
-    *   Install PyTorch: **This step is crucial and depends on your hardware.**
-        *   **For CPU ONLY:**
-            ```bash
-            pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-            ```
-        *   **For NVIDIA GPU with CUDA (Recommended for speed):** First, run `nvidia-smi` to determine the correct CUDA version for your system.  Then, find the appropriate command for your CUDA version on the PyTorch website: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). Example for CUDA 11.8:
-            ```bash
-            pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-            ```
-4.  **Prepare Local Models (Optional):** Follow Step 4 from the **📦 Easy Setup (Windows - Download & Run)** section above (the part about the `checkpoints` folder).
-5.  **Run the Application:**
-    ```bash
-    python main.py
-    ```
-    Ensure your virtual environment is activated (`source venv/bin/activate`) before running this command.
-6.  **Updating Manually:**
-    *   Navigate to the project directory in your terminal.
-    *   Ensure your virtual environment is activated (`source venv/bin/activate`).
-    *   Pull the latest code: `git pull`
-    *   Update dependencies: `pip install -r requirements.txt --upgrade`
-    *   Deactivate the environment: `deactivate`
-
-## ⚙️ Uninstall:
-
-1.  **Delete the main directory (folder) - this app is completely portable.**
-
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/Raxephion/CipherCore-SD1.5-Image-Generator-.git
+   cd CipherCore-SD1.5-Image-Generator-
