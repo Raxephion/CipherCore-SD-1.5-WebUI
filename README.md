@@ -19,7 +19,7 @@ This project is designed for **Windows** users seeking a simple experience throu
   * Load your own Stable Diffusion 1.5 models (in `diffusers` format) from a local `./checkpoints` directory.
   * Access a curated list of popular SD1.5 models directly from the app (models are downloaded and cached locally on first use).
 * **Device Agnostic:**
-  * Run inference on your **CPU**. (inference time around 4:55 with 10th gen i5)
+  * Run inference on your **CPU**. (See below for inference times on CPU vs other webUI's)
   * Leverage your **NVIDIA GPU** for significantly faster (Euler 30steps = 8 secs with 6GBVRAM) generation (requires installing the CUDA-enabled PyTorch version).
 * **Comprehensive Control:**
   * **Positive & Negative Prompts:** Guide the AI with detailed descriptions of what you want (and don't want).
@@ -38,7 +38,7 @@ This project is designed for **Windows** users seeking a simple experience throu
 
 ## 🔥 Why CipherCore?
 
-Unlike some other UIs (*cough* Forge), **CipherCore is built for speed** — and not just on paper.
+Unlike some other UIs, **CipherCore is built for speed** — and not just on paper.
 
 In a direct head-to-head test using **Stable Diffusion 1.5**, with the **same model**, **same settings**, **same seed**, and on the **same CPU-only machine**:
 
