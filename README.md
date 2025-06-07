@@ -55,7 +55,7 @@ CipherCore is **heavily optimized** for both CPU and GPU environments:
 - Lightning-fast local caching and model handling.
 - Optimized for low-VRAM systems (especially on GPU). Yes, even your poor 6GB card.
 
-Expect even better results on GPU — actual benchmarks coming soon, pending the availability of a GPU that hasn’t been hijacked by miners or gamers.
+Expect even better results on GPU — actual benchmarks coming soon, pending the availability of a GPU that hasn’t melted yet.
 
 ---
 
