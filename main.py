@@ -49,7 +49,10 @@ stablediffusionapi/realistic-vision
 DEFAULT_HUB_MODELS = [
     "Raxephion/Typhoon-SD1.5-V1",
     "Yntec/RevAnimatedV2Rebirth",
-    "stablediffusionapi/realcartoon-anime-v11"
+    "stablediffusionapi/realcartoon-anime-v11",
+    "Raxephion/Typhoon-SD15-V2",
+    "stablediffusionapi/realistic-vision",
+    "stablediffusionapi/dreamshaper8"
     # "CompVis/stable-diffusion-v1-4", # Example SD 1.4 model (might behave slightly differently)
     # Add other diffusers-compatible SD1.5 models here
 ]
@@ -264,7 +267,7 @@ def generate_image(model_identifier, selected_device_str, prompt, negative_promp
 
 
     # 3. Parse Image Size
-    width, height = 512, 512 # Default size
+    width, height = 512, 768 # Default size
     if size.lower() == "hire.fix":
         width, height = 1024, 1024
         print(f"Interpreting 'hire.fix' size as {width}x{height}")
@@ -408,8 +411,8 @@ if not model_choices:
 else:
     initial_model_choices = model_choices
     # Set a reasonable default if available
-    if "Raxephion/Typhoon-SD1.5-V1" in model_choices:
-         initial_default_model = "Raxephion/Typhoon-SD1.5-V1"
+    if "Raxephion/Typhoon-SD15-V1" in model_choices:
+         initial_default_model = "Raxephion/Typhoon-SD15-V1"
     elif local_models:
          initial_default_model = local_models[0] # First local model
     else:
@@ -449,7 +452,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo: # Added a soft theme for better 
 
             with gr.Accordion("Advanced Settings", open=False): # Keep advanced settings initially closed
                 with gr.Row():
-                    steps_slider = gr.Slider(minimum=5, maximum=150, value=30, label="Inference Steps", step=1)
+                    steps_slider = gr.Slider(minimum=5, maximum=150, value=20, label="Inference Steps", step=1)
                     cfg_slider = gr.Slider(minimum=1.0, maximum=30.0, value=7.5, label="CFG Scale", step=0.1) # Increased max CFG
                 with gr.Row():
                      scheduler_dropdown = gr.Dropdown(
