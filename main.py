@@ -47,7 +47,7 @@ stablediffusionapi/realistic-vision
 --- add more samples
 """
 DEFAULT_HUB_MODELS = [
-    "Raxephion/Typhoon-SD1.5-V1",
+    "Raxephion/Typhoon-SD15-V1",
     "Yntec/RevAnimatedV2Rebirth",
     "stablediffusionapi/realcartoon-anime-v11",
     "Raxephion/Typhoon-SD15-V2",
