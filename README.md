@@ -1,3 +1,17 @@
+#  11-06-2025 UPDATE:
+**🌟 Model Storage Update for CipherCore 🌟**
+
+Great news for portability and model organization!
+
+CipherCore will now download and store all Hugging Face Hub models directly into the `checkpoints` folder within the application's main directory.
+
+**What this means for you:**
+*   **Complete Portability:** The app and its models are now fully self-contained. Move the CipherCore folder, and your models go with it!
+*   **Dedicated Model Storage:** Models downloaded by this app will no longer be placed in your global Hugging Face cache directory (typically found in your user folder).
+
+**Note:** This change applies to models downloaded by this version of CipherCore onwards. Models already in your global Hugging Face cache will not be automatically moved.
+
+
 # CipherCore SD1.5 - FAST Stable Diffusion 1.5 Local Image Generator Web UI (CPU & GPU)
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
